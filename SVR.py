@@ -39,17 +39,17 @@ def main():
 		'gamma': ['scale', 'auto', 0.01, 0.001]
 	}
 
-	gs = GridSearchCV(
+	grid_search = GridSearchCV(
 		SVR(kernel='rbf'), param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1, verbose=1
 	)
 
 	print('Gridsearch')
-	gs.fit(X_train_s, y_train)
+	grid_search.fit(X_train_s, y_train)
 
 	print('\nBest params:')
-	print(gs.best_params_)
+	print(grid_search.best_params_)
 
-	best_model = gs.best_estimator_
+	best_model = grid_search.best_estimator_
 
 	y_pred = best_model.predict(X_test_s)
 
@@ -58,8 +58,8 @@ def main():
 	r2 = r2_score(y_test, y_pred)
 
 	print('\nEvaluation on test set:')
-	print(f'MSE: {mse:.4f}')
-	print(f'MAE: {mae:.4f}')
+	print(f'Mean squared error: {mse:.4f}')
+	print(f'Mean absolute error: {mae:.4f}')
 	print(f'R2: {r2:.4f}')
 
 	# Save model and scaler separately

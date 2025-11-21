@@ -35,7 +35,7 @@ def main():
         'max_features': ['auto', 'sqrt', 0.5]
     }
 
-    gs = GridSearchCV(
+    grid_search = GridSearchCV(
         RandomForestRegressor(random_state=42),
         param_grid,
         cv=5,
@@ -45,12 +45,12 @@ def main():
     )
 
     print('Starting GridSearchCV ')
-    gs.fit(X_train, y_train)
+    grid_search.fit(X_train, y_train)
 
     print('\nBest params:')
-    print(gs.best_params_)
+    print(grid_search.best_params_)
 
-    best_model = gs.best_estimator_
+    best_model = grid_search.best_estimator_
     y_pred = best_model.predict(X_test)
 
     mse = mean_squared_error(y_test, y_pred)
@@ -58,8 +58,8 @@ def main():
     r2 = r2_score(y_test, y_pred)
 
     print('\nEvaluation on test set:')
-    print(f'MSE: {mse:.4f}')
-    print(f'MAE: {mae:.4f}')
+    print(f'Mean squared error: {mse:.4f}')
+    print(f'Mean absolute error: {mae:.4f}')
     print(f'R2: {r2:.4f}')
 
     # Save trained model

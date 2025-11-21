@@ -32,7 +32,7 @@ def main():
     # Tune n_estimators and max_features
     param_grid = {
         'n_estimators': [100, 200, 500],
-        'max_features': ['auto', 'sqrt', 0.5]
+        'max_features': ['sqrt', 'log2', 0.5]
     }
 
     grid_search = GridSearchCV(

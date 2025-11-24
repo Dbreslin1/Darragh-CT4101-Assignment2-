@@ -4,7 +4,7 @@ import seaborn as sns
 
 def main():
     # Load dataset directly
-    df = pd.read_csv("steel.csv")
+    df = pd.read_csv("steel .csv")
 
 
     # Scatter plot: tensile_strength vs normalising_temperature

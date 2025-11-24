@@ -46,7 +46,7 @@ def main():
     grid_search = GridSearchCV(
         RandomForestRegressor(random_state=42),
         param_grid,
-        cv=5,
+        cv=10,
         scoring='neg_mean_squared_error',
         n_jobs=-1
     )

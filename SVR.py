@@ -51,7 +51,7 @@ def main():
 	}
 
 	grid_search = GridSearchCV(
-		SVR(kernel='rbf'), param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1, verbose=1
+		SVR(kernel='rbf'), param_grid, cv=10, scoring='neg_mean_squared_error', n_jobs=-1, verbose=1
 	)
 
 	print('Gridsearch')

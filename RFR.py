@@ -12,21 +12,29 @@ def main():
 
 
     df = pd.read_csv(csv_path)
-
-   
     X = df.drop(columns=['tensile_strength'])
     y = df['tensile_strength']
 
-    # same processing as svr
+
+    # PREPROCESSING
     df = pd.concat([X, y], axis=1)
     df = df.dropna(subset=['tensile_strength'])
     X = df.drop(columns=['tensile_strength'])
     y = df['tensile_strength']
-    X = X.fillna(X.median())
+
+    for col in X.select_dtypes(include=['float64', 'int64']).columns:
+        lower = X[col].quantile(0.01)
+        upper = X[col].quantile(0.99)
+        X[col] = X[col].clip(lower, upper)
+   
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
+
+    train_medians = X_train.median()   # compute medians on train
+    X_train = X_train.fillna(train_medians)
+    X_test = X_test.fillna(train_medians) 
 
  
     # Tune n_estimators and max_features
@@ -40,8 +48,7 @@ def main():
         param_grid,
         cv=5,
         scoring='neg_mean_squared_error',
-        n_jobs=-1,
-        verbose=1
+        n_jobs=-1
     )
 
     print('Starting GridSearchCV ')

@@ -17,18 +17,29 @@ def main():
 	X = df.drop(columns=['tensile_strength'])
 	y = df['tensile_strength']
 
-	# Basic preprocessing- got rid of rows with missing target, also any missing features were filled with median
+	
+	# PREPROCESSING 
 	df = pd.concat([X, y], axis=1)
 	df = df.dropna(subset=['tensile_strength'])
 	X = df.drop(columns=['tensile_strength'])
 	y = df['tensile_strength']
-	X = X.fillna(X.median())
+
+	# clip numeric columns at 1st/99th percentiles
+	for col in X.select_dtypes(include=['float64', 'int64']).columns:
+		lower = X[col].quantile(0.01)
+		upper = X[col].quantile(0.99)
+		X[col] = X[col].clip(lower, upper)
 
 	X_train, X_test, y_train, y_test = train_test_split(
 		X, y, test_size=0.2, random_state=42
 	)
 
-	# Fit scaler on training data only 
+	# compute medians on training data 
+	train_medians = X_train.median()
+	X_train = X_train.fillna(train_medians)
+	X_test = X_test.fillna(train_medians)
+
+	# Fit scaler on training data only
 	scaler = StandardScaler().fit(X_train)
 	X_train_s = scaler.transform(X_train)
 	X_test_s = scaler.transform(X_test)

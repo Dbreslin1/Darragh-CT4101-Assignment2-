@@ -1,20 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Load SVR results
 svr_results = pd.read_csv("svr_grid_search_results.csv")
 
-# Create a new column combining hyperparameters for labeling
-svr_results['combo'] = svr_results['param_C'].astype(str) + " | gamma=" + svr_results['param_gamma'].astype(str)
+plt.figure(figsize=(8,6))
+sns.lineplot(
+    data=svr_results,
+    x='param_C',
+    y='mean_test_score',
+    hue='param_gamma',
+    marker="o"
+)
 
-# Plot bar chart
-plt.figure(figsize=(10, 6))
-plt.bar(svr_results['combo'], svr_results['mean_test_score'])
-plt.xticks(rotation=45, ha='right')
-plt.title("SVR Hyperparameter Combinations vs Accuracy")
-plt.xlabel("Hyperparameter Combination (C, gamma)")
+plt.title("SVR Hyperparameters vs Accuracy")
+plt.xlabel("C")
 plt.ylabel("Mean Test Score (higher = better)")
+plt.legend(title="Gamma")
 plt.tight_layout()
 plt.show()
+
 
 

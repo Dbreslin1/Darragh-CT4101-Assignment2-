@@ -1,19 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Load RFR results
 rfr_results = pd.read_csv("rfr_grid_search_results.csv")
 
-# Create a new column combining hyperparameters for labeling
-rfr_results['combo'] = rfr_results['param_n_estimators'].astype(str) + " | max_features=" + rfr_results['param_max_features'].astype(str)
+plt.figure(figsize=(8,6))
+sns.lineplot(
+    data=rfr_results,
+    x='param_n_estimators',
+    y='mean_test_score',
+    hue='param_max_features',
+    marker="o"
+)
 
-# Plot bar chart
-plt.figure(figsize=(10, 6))
-plt.bar(rfr_results['combo'], rfr_results['mean_test_score'])
-plt.xticks(rotation=45, ha='right')
-plt.title("RFR Hyperparameter Combinations vs Accuracy")
-plt.xlabel("Hyperparameter Combination (n_estimators, max_features)")
+plt.title("RFR Hyperparameters vs Accuracy")
+plt.xlabel("Number of Trees (n_estimators)")
 plt.ylabel("Mean Test Score (higher = better)")
+plt.legend(title="Max Features")
 plt.tight_layout()
 plt.show()
+
+
 

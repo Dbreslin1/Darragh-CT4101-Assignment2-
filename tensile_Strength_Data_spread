@@ -1,0 +1,52 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def main():
+    # Load dataset directly
+    df = pd.read_csv("steel.csv")
+
+
+    # Scatter plot: tensile_strength vs normalising_temperature
+    plt.figure(figsize=(8,6))
+    sns.scatterplot(
+        data=df,
+        x='normalising_temperature',
+        y='tensile_strength',
+        hue='tempering_temperature',
+        palette='viridis',
+        s=80
+    )
+    plt.title("Tensile Strength vs Normalising Temperature")
+    plt.xlabel("Normalising Temperature")
+    plt.ylabel("Tensile Strength")
+    plt.legend(title="Tempering Temp")
+    plt.show()
+
+    # Scatter plot: tensile_strength vs tempering_temperature
+    plt.figure(figsize=(8,6))
+    sns.scatterplot(
+        data=df,
+        x='tempering_temperature',
+        y='tensile_strength',
+        hue='normalising_temperature',
+        palette='magma',
+        s=80
+    )
+    plt.title("Tensile Strength vs Tempering Temperature")
+    plt.xlabel("Tempering Temperature")
+    plt.ylabel("Tensile Strength")
+    plt.legend(title="Normalising Temp")
+    plt.show()
+
+    # Histogram of tensile_strength
+    plt.figure(figsize=(8,6))
+    sns.histplot(df['tensile_strength'], bins=20, kde=True, color='steelblue')
+    plt.title("Distribution of Tensile Strength")
+    plt.xlabel("Tensile Strength")
+    plt.ylabel("Frequency")
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+

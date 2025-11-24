@@ -73,14 +73,15 @@ def main():
 	print(f'Mean absolute error: {mae:.4f}')
 	print(f'R2: {r2:.4f}')
 
-	# Save model and scaler separately
-	out_model = os.path.join(base_dir, 'svr_model.joblib')
-	out_scaler = os.path.join(base_dir, 'scaler.joblib')
-	joblib.dump(best_model, out_model)
-	joblib.dump(scaler, out_scaler)
-	print(f'Model saved to: {out_model}')
-	print(f'Scaler saved to: {out_scaler}')
+	results_df = pd.DataFrame(grid_search.cv_results_)
+	
+	# Save to CSV
+	out_csv = os.path.join(base_dir, 'svr_grid_search_results.csv')
+	results_df.to_csv(out_csv, index=False)
 
+	print(f"Grid search results saved to: {out_csv}")
+    
+			
 
 if __name__ == '__main__':
 	main()
